@@ -48,6 +48,7 @@ export default function Header() {
   // Redux taxonomy: continents → countries → states → cities
   const { data: taxonomy } = useSelector((state) => state.taxonomy);
   const user = useSelector(state => state.user);
+  const {id: userId} = user;
 
   useEffect(() => {
     dispatch(fetchTaxonomy());
@@ -168,7 +169,7 @@ export default function Header() {
           {/* Right icons / Hamburger */}
           {!isMobile ? (
             <Box sx={{ ml: "auto", display: "flex", gap: 1 }}>
-              {!user ? (
+              {!userId ? (
                 // If NOT logged in
                 <Button
                   variant="outlined"
@@ -191,18 +192,18 @@ export default function Header() {
                     <MenuItem disabled>{user?.name}</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
-                  <IconButton
+                  {/* <IconButton
                     title="Wishlist"
                     onClick={() => navigate("/wishlist")}
                   >
                     <FavoriteBorderIcon />
-                  </IconButton>
-                  <IconButton
+                  </IconButton> */}
+                 {userId && <IconButton
                     title="Cart"
                     onClick={() => navigate("/bookings")}
                   >
                     <ShoppingBagIcon />
-                  </IconButton>
+                  </IconButton>}
                 </>
               )}
             </Box>

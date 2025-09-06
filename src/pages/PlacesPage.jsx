@@ -90,7 +90,7 @@ const handleToggleCart = () => {
       </Box>
 
       {/* Wishlist Icon */}
-      <IconButton
+      {/* <IconButton
         sx={{ position: "absolute", top: 8, right: 8, bgcolor: "white" }}
         size="small"
         onClick={() => handleToggleFavorite(p._id)}
@@ -100,7 +100,7 @@ const handleToggleCart = () => {
         ) : (
           <FavoriteBorderIcon />
         )}
-      </IconButton>
+      </IconButton> */}
 
       {/* Content */}
       <CardContent>
@@ -132,7 +132,7 @@ const handleToggleCart = () => {
           </Button>
 
           {/* Cart Icon */}
-          <IconButton
+         {userId && <IconButton
             size="small"
             color="primary"
              onClick={handleToggleCart}
@@ -142,7 +142,7 @@ const handleToggleCart = () => {
             ) : (
               <ShoppingCartOutlinedIcon />
             )}
-          </IconButton>
+          </IconButton>}
         </Box>
       </CardContent>
     </Card>
