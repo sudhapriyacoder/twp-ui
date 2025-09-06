@@ -169,6 +169,13 @@ export default function Header() {
           {/* Right icons / Hamburger */}
           {!isMobile ? (
             <Box sx={{ ml: "auto", display: "flex", gap: 1 }}>
+              <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => navigate("/admin")}
+                >
+                  Admin
+                </Button>
               {!userId ? (
                 // If NOT logged in
                 <Button
