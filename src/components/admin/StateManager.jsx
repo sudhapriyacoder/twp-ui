@@ -7,6 +7,7 @@ import {
   deleteState,
 } from "../../store/stateSlice";
 import { fetchCountries } from "../../store/countrySlice";
+import "../../assets/myntraAdmin.css";
 
 import {
   Button,
@@ -22,6 +23,8 @@ import {
   TableBody,
   MenuItem,
   Typography,
+  TableContainer,
+  Paper,
 } from "@mui/material";
 
 export default function StateManager() {
@@ -53,13 +56,7 @@ export default function StateManager() {
       alert("Please select a country");
       return;
     }
-
-    if (editId) {
-      dispatch(updateState({ id: editId, state: { name, countryId } }));
-    } else {
-      dispatch(createState({ name, countryId }));
-    }
-
+    dispatch(createState({ name, countryId }));
     handleClose();
   };
 
@@ -71,7 +68,7 @@ export default function StateManager() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="admin-myntra" style={{ padding: "20px" }}>
       <Typography variant="h5" gutterBottom>
         Manage States
       </Typography>
@@ -82,7 +79,8 @@ export default function StateManager() {
       </Button>
 
       {/* States Table */}
-      <Table style={{ marginTop: "20px" }}>
+      <TableContainer className="admin-myntra">
+        <Table style={{ marginTop: "20px" }}>
         <TableHead>
           <TableRow>
             <TableCell><strong>State Name</strong></TableCell>
@@ -117,7 +115,8 @@ export default function StateManager() {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+        </Table>
+      </TableContainer>
 
       {/* Dialog for Add/Edit */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">

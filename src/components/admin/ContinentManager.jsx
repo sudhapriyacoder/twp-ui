@@ -6,6 +6,7 @@ import {
   updateContinent,
   deleteContinent,
 } from "../../store/continentSlice";
+import "../../assets/myntraAdmin.css";
 
 import {
   Box,
@@ -73,7 +74,7 @@ function ContinentManager() {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box className="admin-myntra" sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
         🌍 Manage Continents
       </Typography>
@@ -89,13 +90,23 @@ function ContinentManager() {
       </Button>
 
       {/* Table */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
+      <TableContainer
+        component={Paper}
+        className="admin-myntra"
+        sx={{ borderRadius: 2, boxShadow: 3 }}
+      >
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><b>#</b></TableCell>
-              <TableCell><b>Continent Name</b></TableCell>
-              <TableCell align="right"><b>Actions</b></TableCell>
+              <TableCell>
+                <b>#</b>
+              </TableCell>
+              <TableCell>
+                <b>Continent Name</b>
+              </TableCell>
+              <TableCell align="right">
+                <b>Actions</b>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -105,18 +116,23 @@ function ContinentManager() {
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{c.name}</TableCell>
                   <TableCell align="right">
-                    <IconButton
+                    <Button
+                      variant="outlined"
+                      size="small"
                       color="primary"
                       onClick={() => handleOpen(c)}
+                      style={{ marginRight: "8px" }}
                     >
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      color="error"
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="secondary"
                       onClick={() => handleDelete(c._id)}
                     >
-                      <Delete />
-                    </IconButton>
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))

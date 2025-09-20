@@ -32,6 +32,7 @@ import {
 } from "@mui/material";
 
 import { Edit, Delete } from "@mui/icons-material";
+import '../../assets/myntraAdmin.css';
 
 export default function CountryManager() {
   const dispatch = useDispatch();
@@ -75,17 +76,12 @@ export default function CountryManager() {
       alert("Please select a continent");
       return;
     }
-
-    if (editId) {
-      dispatch(updateCountry({ id: editId, country: { name, continentId } }));
-    } else {
-      dispatch(createCountry({ name, continentId }));
-    }
+    dispatch(createCountry({ name, continentId }));
     handleClose();
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+  <Box className="admin-myntra" sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
         🏳 Manage Countries
       </Typography>
@@ -101,7 +97,7 @@ export default function CountryManager() {
       </Button>
 
       {/* Table */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
+  <TableContainer component={Paper} className="admin-myntra" sx={{ borderRadius: 2, boxShadow: 3 }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -112,32 +108,40 @@ export default function CountryManager() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {countries.length > 0 ? (
-              countries.map((c, index) => (
-                <TableRow key={c._id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{c.name}</TableCell>
-                  <TableCell>{c.continentId?.name || "-"}</TableCell>
-                  <TableCell align="right">
-                    <IconButton color="primary" onClick={() => handleOpen(c)}>
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      color="error"
-                      onClick={() => dispatch(deleteCountry(c._id))}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} align="center">
-                  No countries found
-                </TableCell>
-              </TableRow>
-            )}
+            {countries.length > 0
+              ? countries.map((c, index) => (
+                  <TableRow key={c._id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{c.name}</TableCell>
+                    <TableCell>{c.continentId?.name || "-"}</TableCell>
+                    <TableCell align="right">
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        onClick={() => handleOpen(c)}
+                        style={{ marginRight: "8px" }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="secondary"
+                        onClick={() => dispatch(deleteCountry(c._id))}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : (
+                  <TableRow>
+                    <TableCell colSpan={4} align="center">
+                      No countries found
+                    </TableCell>
+                  </TableRow>
+                )}
           </TableBody>
         </Table>
       </TableContainer>
