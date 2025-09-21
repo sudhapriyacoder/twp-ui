@@ -29,32 +29,59 @@ export default function CityPage() {
       </Typography>
 
       {/* Cards grid */}
-      <Grid container spacing={2}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, pb: 2 }}>
         {cities.map((city) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={city._id}>
-            <Card
+          <Card
+            key={city._id}
             onClick={() =>
-    navigate(
-      `/places?continent=${continent}&country=${country}&state=${state}&city=${city.name}&cityId=${city._id}`
-    )
-  }
+              navigate(
+                `/places?continent=${continent}&country=${country}&state=${state}&city=${city.name}&cityId=${city._id}`
+              )
+            }
+            sx={{
+              cursor: "pointer",
+              borderRadius: 3,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              "&:hover": { boxShadow: "0 6px 18px rgba(0,0,0,0.2)" },
+              width: { xs: "100%", sm: "48%", md: "30%", lg: "22%" },
+              position: "relative",
+            }}
+          >
+            <img
+              src={city.cityImage}
+              alt={city.name}
+              style={{
+                width: "100%",
+                height: "180px",
+                objectFit: "cover",
+                borderTopLeftRadius: "inherit",
+                borderTopRightRadius: "inherit",
+              }}
+            />
+            <CardContent
               sx={{
-                cursor: "pointer",
-                borderRadius: 3,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                "&:hover": { boxShadow: "0 6px 18px rgba(0,0,0,0.2)" }
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                color: "#fff",
+                p: 0.5,
+                pb: 1,
+                bgcolor: "rgba(0, 0, 0, 0.7)",
+                borderBottomLeftRadius: "inherit",
+                borderBottomRightRadius: "inherit",
               }}
             >
-              <CardContent>
-                <Typography variant="h6" align="center">
-                  {city.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: 700, textAlign: "center", mb: 0.5 }}
+              >
+                {city.name}
+              </Typography>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
-
+      </Box>
     </Box>
   );
 }

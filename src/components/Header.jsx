@@ -49,6 +49,7 @@ export default function Header() {
   const { data: taxonomy } = useSelector((state) => state.taxonomy);
   const user = useSelector(state => state.user);
   const {id: userId} = user;
+  const cartItems = useSelector(state => state.cart.items);
 
   useEffect(() => {
     dispatch(fetchTaxonomy());
@@ -208,8 +209,15 @@ export default function Header() {
                  {userId && <IconButton
                     title="Cart"
                     onClick={() => navigate("/bookings")}
+                    color="inherit"
+                    sx={{ position: 'relative' }}
                   >
                     <ShoppingBagIcon />
+                    {cartItems.length > 0 && (
+                      <Box sx={{ position: 'absolute', top: -4, right: -4, bgcolor: '#ff3f6c', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, border: '2px solid #fff' }}>
+                        {cartItems.length}
+                      </Box>
+                    )}
                   </IconButton>}
                 </>
               )}

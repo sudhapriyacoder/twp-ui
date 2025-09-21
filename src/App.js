@@ -11,6 +11,7 @@ import { useLocation, Navigate  } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import AuthUI from "./pages/Sign";
 import { GoogleLogin } from "@react-oauth/google";
+import Dashboard from "./pages/Dashboard";
 import {
   Box,
   Tabs,
@@ -20,6 +21,8 @@ import {
   Divider,
 } from "@mui/material";
 import axiosInstance from "./api/axiosInstance";
+import { useDispatch } from "react-redux";
+import { setUser } from "./store/userSlice";
 
 function Home() {
   return (
@@ -41,26 +44,26 @@ function PlacesRouter() {
 
 
 function App() {
-  // const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     try {
-  //       setUser(jwtDecode(token));
-  //     } catch (err) {
-  //       console.error("Invalid token:", err);
-  //       localStorage.removeItem("token");
-  //     }
-  //   }
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        dispatch(setUser({ id: decoded.id, email: decoded.email }));
+      } catch (err) {
+        localStorage.removeItem("token");
+      }
+    }
+  }, [dispatch]);
 
 
   return (
     <Router>
       <Header />
       <Routes>
-        <Route path="/dashboard" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/sign" element={<AuthUI />} />
         <Route path="/city" element={<CityPage />} />
         <Route path="/places" element={<PlacesRouter />} />

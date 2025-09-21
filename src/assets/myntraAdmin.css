@@ -5,8 +5,8 @@
 
 .admin-myntra {
   font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-  color: #145374;
+  /* background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); */
+  color: #1728d9;
   min-height: 100vh;
   padding: 32px 0;
 }
@@ -105,6 +105,6 @@
 
 .admin-myntra .MuiTypography-root {
   font-weight: 700;
-  color: #50c9c3;
-  text-shadow: 0 2px 8px #a8edea;
+  /* color: #50c9c3; */
+  /* text-shadow: 0 2px 8px #a8edea; */
 }

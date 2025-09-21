@@ -8,6 +8,7 @@ import StateCRUD from "../components/admin/StateManager";
 import CityCRUD from "../components/admin/CityManager";
 import PlacesCRUD from "../components/admin/PlacesManager";
 import RoutesManager from "../components/admin/RoutesManager";
+import HomeCarouselManager from "../components/admin/HomeCarouselManager";
 
 // Helper component for tab panels
 function TabPanel({ children, value, index }) {
@@ -53,6 +54,7 @@ export default function Admin() {
   <Tab label="City" />
   <Tab label="Places" />
   <Tab label="Routes" />
+  <Tab label="Home Carousel" />
 </Tabs>
 
 {/* Tab Panels */}
@@ -73,6 +75,9 @@ export default function Admin() {
 </TabPanel>
 <TabPanel value={tabIndex} index={5}>
   <RoutesManager />
+</TabPanel>
+<TabPanel value={tabIndex} index={6}>
+  <HomeCarouselManager />
 </TabPanel>
 
     </Box>

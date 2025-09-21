@@ -1,59 +1,92 @@
-import React from "react";
-import { Box, Typography, Grid, Paper, Button } from "@mui/material";
-import { Flight, LocationOn, Favorite, Explore, Star } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "../api/axiosInstance";
+import { Box, Typography, Card, CardContent } from "@mui/material";
+import Carousel from "react-material-ui-carousel";
+import { fetchCities } from "../store/citySlice";
+import { fetchContinents } from "../store/continentSlice";
+import { fetchCountries } from "../store/countrySlice";
+import { useNavigate } from "react-router-dom";
 import "../assets/myntraAdmin.css";
 
 export default function Dashboard() {
+  const [carouselItems, setCarouselItems] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cities = useSelector((state) => state.cities.list);
+  const continents = useSelector((state) => state.continents.list);
+  const countries = useSelector((state) => state.countries.list);
+
+  console.log("Cities in store:", cities);
+  console.log("Continents in store:", continents);
+  console.log("Countries in store:", countries);
+
+  useEffect(() => {
+    axios.get("/api/home")
+      .then(res => setCarouselItems(res.data))
+      .catch(() => setCarouselItems([]));
+    dispatch(fetchCities());
+    dispatch(fetchContinents());
+    dispatch(fetchCountries());
+  }, [dispatch]);
+
   return (
     <Box className="admin-myntra" sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom align="center" style={{ fontWeight: 800 }}>
-        🌏 GhumneChalo Travel Dashboard
+      <Typography variant="h4" gutterBottom align="center" style={{ fontWeight: 800, color: "#b8860b" }}>
+        Welcome to GhumneChalo
       </Typography>
-      <Typography variant="subtitle1" align="center" gutterBottom>
+      <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 800, color: "#b8860b" }}>
         Welcome! Explore, manage, and discover amazing places, countries, and continents.
       </Typography>
-      <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
-        <Grid item xs={12} md={3}>
-          <Paper elevation={4} className="admin-myntra" sx={{ p: 3, textAlign: "center" }}>
-            <Flight sx={{ fontSize: 48, color: "#ff3f6c" }} />
-            <Typography variant="h6" sx={{ mt: 2 }}>Total Countries</Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: "#ff3f6c" }}>--</Typography>
-            <Button variant="outlined" color="primary" sx={{ mt: 2 }} href="/admin/countries">Manage Countries</Button>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper elevation={4} className="admin-myntra" sx={{ p: 3, textAlign: "center" }}>
-            <LocationOn sx={{ fontSize: 48, color: "#ee9ca7" }} />
-            <Typography variant="h6" sx={{ mt: 2 }}>Total States</Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: "#ee9ca7" }}>--</Typography>
-            <Button variant="outlined" color="primary" sx={{ mt: 2 }} href="/admin/states">Manage States</Button>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper elevation={4} className="admin-myntra" sx={{ p: 3, textAlign: "center" }}>
-            <Explore sx={{ fontSize: 48, color: "#ff3f6c" }} />
-            <Typography variant="h6" sx={{ mt: 2 }}>Total Places</Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: "#ff3f6c" }}>--</Typography>
-            <Button variant="outlined" color="primary" sx={{ mt: 2 }} href="/admin/places">Manage Places</Button>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Paper elevation={4} className="admin-myntra" sx={{ p: 3, textAlign: "center" }}>
-            <Star sx={{ fontSize: 48, color: "#ee9ca7" }} />
-            <Typography variant="h6" sx={{ mt: 2 }}>Total Continents</Typography>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: "#ee9ca7" }}>--</Typography>
-            <Button variant="outlined" color="primary" sx={{ mt: 2 }} href="/admin/continents">Manage Continents</Button>
-          </Paper>
-        </Grid>
-      </Grid>
-      <Box sx={{ mt: 6, textAlign: "center" }}>
-        <Typography variant="h5" sx={{ fontWeight: 700, color: "#ff3f6c" }}>
-          ✈️ Plan your next adventure with GhumneChalo!
-        </Typography>
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          Use the admin panel to add, edit, and explore travel destinations, manage your wishlist, and discover new routes.
-        </Typography>
+      <Box sx={{  mt: 2, bgcolor: "#fff", margin: "0 auto" }}>
+        {carouselItems.length > 0 ? (
+          <Carousel
+            autoPlay
+            animation="slide"
+            indicators
+            navButtonsAlwaysVisible={false}
+            sx={{ width: "100%", maxWidth: "100%" }}
+          >
+            {carouselItems.map(item => (
+              <Box key={item._id} sx={{ textAlign: "center", bgcolor: "#fff"}}>
+                <img src={item.imageUrl} alt={item.imageName} style={{ width: "100%", objectFit: "cover", borderRadius: 8 }} />
+                {/* <Typography variant="h6" sx={{ mt: 1 }}>{item.imageName}</Typography> */}
+              </Box>
+            ))}
+          </Carousel>
+        ) : (
+          <Typography variant="h5" align="center" sx={{ mt: 8, color: "#b8860b" }}>
+          
+          </Typography>
+        )}
       </Box>
+      {/* Country-based city cards below carousel */}
+      {countries.map(country => {
+        // Get up to 10 cities for this country, sorted by trendingSequence
+        const countryCities = cities
+          .filter(city => city.countryId?._id === country._id)
+          .sort((a, b) => (a.trendingSequence ?? 0) - (b.trendingSequence ?? 0))
+          .slice(0, 10);
+        if (countryCities.length === 0) return null;
+        return (
+          <Box key={country._id} sx={{ mt: 6 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: "#b8860b", mb: 2 }}>
+              {country.name}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 3, overflowX: "auto", pb: 2 }}>
+              {countryCities.map(city => (
+                <Card key={city._id} sx={{ minWidth: 220, maxWidth: 220, height: 180, position: "relative", boxShadow: 3, overflow: "hidden", border: "4px dashed #FFD700", borderRadius: 0, cursor: "pointer" }}
+                  onClick={() => navigate(`/places?cityId=${city._id}`)}>
+                  <img src={city.cityImage} alt={city.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <CardContent sx={{ position: "absolute", bottom: 0, left: 0, width: "100%", bgcolor: "rgba(0,0,0,0.5)", color: "#fff", p: 0.5, pb: 1 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 700, textAlign: "center", mb: 0.5 }}>{city.name}</Typography>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
+          </Box>
+        );
+      })}
     </Box>
   );
 }
