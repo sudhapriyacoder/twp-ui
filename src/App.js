@@ -19,7 +19,6 @@ import {
   Button,
   Divider,
 } from "@mui/material";
-import {base_url} from "./baseUrl";
 import axiosInstance from "./api/axiosInstance";
 
 function Home() {

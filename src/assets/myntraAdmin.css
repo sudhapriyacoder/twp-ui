@@ -1,30 +1,33 @@
 /* Myntra-inspired admin UI styles */
 
+
+
+
 .admin-myntra {
   font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
-  background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
-  color: #282c3f;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #145374;
   min-height: 100vh;
   padding: 32px 0;
 }
 
 .admin-myntra .MuiTableContainer-root {
-  box-shadow: 0 4px 16px rgba(255,63,108,0.12);
+  box-shadow: 0 4px 16px rgba(44,62,80,0.12);
   border-radius: 16px;
-  background: linear-gradient(90deg, #fff 80%, #ffe3ec 100%);
-  border: 2px solid #ff3f6c;
+  background: linear-gradient(90deg, #fff 80%, #a8edea 100%);
+  border: 2px solid #50c9c3;
 }
 
 .admin-myntra .MuiTableHead-root {
-  background: linear-gradient(90deg, #ff3f6c 0%, #ffdde1 100%);
-  color: #fff;
+  background: linear-gradient(90deg, #50c9c3 0%, #a5dee5 100%);
+  color: #232526;
 }
 
 .admin-myntra .MuiTableCell-head {
   font-weight: 700;
-  color: #fff;
+  color: #145374;
   font-size: 1.1rem;
-  border-bottom: 2px solid #ff3f6c;
+  border-bottom: 2px solid #50c9c3;
   letter-spacing: 0.5px;
 }
 
@@ -34,73 +37,74 @@
 }
 
 .admin-myntra .MuiTableRow-root:hover {
-  background: #ffe3ec;
+  background: #f7f7d4;
 }
 
 .admin-myntra .MuiButton-root {
   border-radius: 24px;
   font-weight: 700;
   text-transform: none;
-  box-shadow: 0 2px 8px rgba(255,63,108,0.08);
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
   padding: 8px 24px;
   font-size: 1rem;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  background: linear-gradient(90deg, #ff3f6c 0%, #ffdde1 100%);
-  color: #fff;
+  background: linear-gradient(90deg, #50c9c3 0%, #a5dee5 100%);
+  color: #145374;
 }
 
 .admin-myntra .MuiButton-outlinedPrimary {
-  border-color: #ff3f6c;
-  color: #ff3f6c;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(255,63,108,0.08);
+  border-color: #50c9c3;
+  color: #50c9c3;
+  background: #232526;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.08);
 }
 
 .admin-myntra .MuiButton-outlinedPrimary:hover {
-  background: linear-gradient(90deg, #ff3f6c 0%, #ffdde1 100%);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(255,63,108,0.16);
+  background: linear-gradient(90deg, #a8edea 0%, #50c9c3 100%);
+  color: #145374;
+  box-shadow: 0 4px 16px rgba(44,62,80,0.16);
 }
 
 .admin-myntra .MuiButton-outlinedSecondary {
-  border-color: #ee9ca7;
-  color: #ee3f6c;
+  border-color: #f7f7d4;
+  color: #f7b26a;
   background: #fff;
 }
 
 .admin-myntra .MuiButton-outlinedSecondary:hover {
-  background: linear-gradient(90deg, #ee9ca7 0%, #ffdde1 100%);
-  color: #fff;
+  background: linear-gradient(90deg, #f7f7d4 0%, #a8edea 100%);
+  color: #145374;
 }
 
 .admin-myntra .MuiDialog-paper {
   border-radius: 24px;
   padding: 32px;
-  background: linear-gradient(135deg, #fff 80%, #ffe3ec 100%);
-  box-shadow: 0 8px 32px rgba(255,63,108,0.12);
+  background: linear-gradient(135deg, #fff 80%, #a8edea 100%);
+  box-shadow: 0 8px 32px rgba(44,62,80,0.12);
 }
 
 .admin-myntra .MuiDialogTitle-root {
   font-weight: 800;
-  color: #ff3f6c;
+  color: #50c9c3;
   font-size: 1.5rem;
   letter-spacing: 1px;
-  text-shadow: 0 2px 8px #ffe3ec;
+  text-shadow: 0 2px 8px #a8edea;
 }
 
 .admin-myntra .MuiTextField-root {
   margin-bottom: 20px;
-  background: #fff0f6;
+  background: #f7f7d4;
   border-radius: 8px;
+  color: #145374;
 }
 
 .admin-myntra .MuiTableCell-root {
   font-size: 1.05rem;
-  color: #282c3f;
+  color: #145374;
 }
 
 .admin-myntra .MuiTypography-root {
   font-weight: 700;
-  color: #ff3f6c;
-  text-shadow: 0 2px 8px #ffe3ec;
+  color: #50c9c3;
+  text-shadow: 0 2px 8px #a8edea;
 }

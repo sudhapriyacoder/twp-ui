@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPlaces, addPlace, updatePlace, deletePlace } from "../../store/placeSlice";
-
 import {
   Box, Button, TextField, FormControl, InputLabel, Select, MenuItem,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
   Dialog, DialogTitle, DialogContent, DialogActions, Typography, IconButton
 } from "@mui/material";
-
 import { Edit, Delete } from "@mui/icons-material";
 import axiosInstance from "../../api/axiosInstance";
+import '../../assets/myntraAdmin.css';
 
 export default function PlacesManager() {
   const dispatch = useDispatch();
@@ -113,7 +112,7 @@ export default function PlacesManager() {
   const handleDelete = (id) => dispatch(deletePlace(id));
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box className="admin-myntra" sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
         🏞 Manage Places
       </Typography>
@@ -124,7 +123,7 @@ export default function PlacesManager() {
       </Button>
 
       {/* Table */}
-      <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
+      <TableContainer component={Paper} className="admin-myntra">
         <Table>
           <TableHead>
             <TableRow>

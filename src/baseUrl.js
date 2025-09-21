@@ -1,1 +1,0 @@
-export const base_url = "https://twp-server.onrender.com"

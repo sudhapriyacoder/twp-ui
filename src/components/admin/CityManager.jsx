@@ -8,6 +8,7 @@ import {
 } from "../../store/citySlice";
 import { fetchStates } from "../../store/stateSlice";
 import { fetchCountries } from "../../store/countrySlice";
+import '../../assets/myntraAdmin.css';
 
 import {
   Button,
@@ -40,6 +41,8 @@ export default function CityManager() {
   const [name, setName] = useState("");
   const [stateId, setStateId] = useState("");
   const [countryId, setCountryId] = useState("");
+  const [cityImage, setCityImage] = useState("");
+  const [trendingSequence, setTrendingSequence] = useState("");
 
   // ✅ Fetch all on load
   useEffect(() => {
@@ -65,13 +68,18 @@ export default function CityManager() {
   setOpen(true);
 };
 
-  const handleSave = () => {
-    const payload = { name, stateId, countryId };
+  const handleSave = async () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("countryId", countryId);
+    formData.append("stateId", stateId);
+    formData.append("trendingSequence", trendingSequence);
+    formData.append("cityImage", cityImage);
 
     if (editCity) {
-      dispatch(updateCity({ id: editCity._id, data: payload }));
+      dispatch(updateCity({ id: editCity._id, data: formData }));
     } else {
-      dispatch(addCity(payload));
+      dispatch(addCity(formData));
     }
     setOpen(false);
   };
@@ -84,7 +92,7 @@ export default function CityManager() {
   const filteredStates = states.filter((s) => s.countryId?._id === countryId);
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px" }} className="admin-myntra">
       <Typography variant="h5" gutterBottom>
         Manage Cities
       </Typography>
@@ -95,7 +103,7 @@ export default function CityManager() {
       </Button>
 
       {/* Cities Table */}
-      <TableContainer component={Paper} style={{ marginTop: "20px" }}>
+      <TableContainer component={Paper} className="admin-myntra" style={{ marginTop: "20px" }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -144,15 +152,13 @@ export default function CityManager() {
             margin="normal"
             required
           />
-
-          {/* Select Country */}
           <TextField
             select
             label="Country"
             value={countryId}
             onChange={(e) => {
               setCountryId(e.target.value);
-              setStateId(""); // reset state when country changes
+              setStateId("");
             }}
             fullWidth
             margin="normal"
@@ -160,13 +166,9 @@ export default function CityManager() {
           >
             <MenuItem value="">Select Country</MenuItem>
             {countries.map((c) => (
-              <MenuItem key={c._id} value={c._id}>
-                {c.name}
-              </MenuItem>
+              <MenuItem key={c._id} value={c._id}>{c.name}</MenuItem>
             ))}
           </TextField>
-
-          {/* Select State */}
           <TextField
             select
             label="State"
@@ -179,11 +181,26 @@ export default function CityManager() {
           >
             <MenuItem value="">Select State</MenuItem>
             {filteredStates.map((s) => (
-              <MenuItem key={s._id} value={s._id}>
-                {s.name}
-              </MenuItem>
+              <MenuItem key={s._id} value={s._id}>{s.name}</MenuItem>
             ))}
           </TextField>
+          <TextField
+            label="Trending Sequence"
+            type="number"
+            value={trendingSequence}
+            onChange={(e) => setTrendingSequence(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="City Image URL"
+            value={cityImage}
+            onChange={e => setCityImage(e.target.value)}
+            fullWidth
+            margin="normal"
+            required
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)} color="secondary">

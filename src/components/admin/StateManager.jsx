@@ -74,47 +74,58 @@ export default function StateManager() {
       </Typography>
 
       {/* Add State Button */}
-      <Button variant="contained" color="primary" onClick={handleOpen}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleOpen}
+        sx={{ mb: 4 }}
+      >
         Add State
       </Button>
 
       {/* States Table */}
       <TableContainer className="admin-myntra">
         <Table style={{ marginTop: "20px" }}>
-        <TableHead>
-          <TableRow>
-            <TableCell><strong>State Name</strong></TableCell>
-            <TableCell><strong>Country</strong></TableCell>
-            <TableCell><strong>Actions</strong></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {states.map((s) => (
-            <TableRow key={s._id}>
-              <TableCell>{s.name}</TableCell>
-              <TableCell>{s.countryId?.name}</TableCell>
+          <TableHead>
+            <TableRow>
               <TableCell>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  onClick={() => handleEdit(s)}
-                  style={{ marginRight: "8px" }}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="secondary"
-                  onClick={() => dispatch(deleteState(s._id))}
-                >
-                  Delete
-                </Button>
+                <strong>State Name</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Country</strong>
+              </TableCell>
+              <TableCell>
+                <strong>Actions</strong>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
+          </TableHead>
+          <TableBody>
+            {states.map((s) => (
+              <TableRow key={s._id}>
+                <TableCell>{s.name}</TableCell>
+                <TableCell>{s.countryId?.name}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    onClick={() => handleEdit(s)}
+                    style={{ marginRight: "8px" }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                    onClick={() => dispatch(deleteState(s._id))}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
 

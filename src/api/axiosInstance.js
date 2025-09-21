@@ -2,8 +2,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-//   baseURL: process.env.REACT_APP_API_URL || "https://twp-server.onrender.com", // default base URL
-baseURL: "https://twp-server.onrender.com",
+  baseURL: process.env.REACT_APP_API_URL,
+// baseURL: "https://twp-server.onrender.com",
   timeout: 15000, // optional
   headers: {
     "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import {
   InputLabel, Select, MenuItem
 } from "@mui/material";
 import axiosInstance from "../../api/axiosInstance";
+import '../../assets/myntraAdmin.css';
 
 export default function RoutesManager() {
   const [cities, setCities] = useState([]);
@@ -81,7 +82,7 @@ export default function RoutesManager() {
   const citySelectDisabled = useMemo(() => !cities?.length, [cities]);
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box className="admin-myntra" sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>🛣 Manage Routes</Typography>
 
       {/* City Selector */}
@@ -101,7 +102,7 @@ export default function RoutesManager() {
 
       {routes.length > 0 && (
         <>
-          <TableContainer component={Paper}>
+      <TableContainer component={Paper} className="admin-myntra">
             <Table>
               <TableHead>
                 <TableRow>
