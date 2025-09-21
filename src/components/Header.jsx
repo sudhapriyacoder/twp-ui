@@ -28,7 +28,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaxonomy } from "../store/taxonomySlice";
 import { jwtDecode } from "jwt-decode";
@@ -99,7 +99,7 @@ export default function Header() {
   return (
     <>
       {/* AppBar */}
-      <AppBar position="sticky" sx={{ bgcolor: "#fff", color: "text.primary" }}>
+  <AppBar position="sticky" sx={{ bgcolor: "#23396c", color: "#fff" }}>
         <Toolbar sx={{ gap: 2 }}>
           {/* Logo */}
           <Box
@@ -154,7 +154,7 @@ export default function Header() {
                 fullWidth
                 sx={{
                   maxWidth: 460,
-                  bgcolor: "#f5f5f6",
+                  bgcolor: "#f2f6f8",
                   borderRadius: 1,
                   "& fieldset": { border: "none" },
                 }}
@@ -173,12 +173,13 @@ export default function Header() {
           {!isMobile ? (
             <Box sx={{ ml: "auto", display: "flex", gap: 1 }}>
               <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={() => navigate("/admin")}
-                >
-                  Admin
-                </Button>
+                variant="outlined"
+                size="small"
+                onClick={() => navigate("/admin")}
+                sx={{ color: '#fff', borderColor: '#fff' }}
+              >
+                Admin
+              </Button>
               {!userId ? (
                 // If NOT logged in
                 <Button
@@ -192,7 +193,7 @@ export default function Header() {
                 // If logged in
                 <>
                   <IconButton title="Profile" onClick={handleProfileClick}>
-                    <AccountCircleIcon />
+                    <AccountCircleIcon sx={{ color: '#fff' }} />
                   </IconButton>
                   <Menu
                     anchorEl={anchorEl}

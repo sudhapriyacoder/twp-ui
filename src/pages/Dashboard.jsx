@@ -31,11 +31,11 @@ export default function Dashboard() {
   }, [dispatch]);
 
   return (
-    <Box className="admin-myntra" sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom align="center" style={{ fontWeight: 800, color: "#b8860b" }}>
+    <Box className="admin-myntra" sx={{ p: 4, bgcolor: '#f7c873', minHeight: '100vh' }}>
+      <Typography variant="h4" gutterBottom align="center" style={{ fontWeight: 800, color: "#23396c" }}>
         Welcome to GhumneChalo
       </Typography>
-      <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 800, color: "#b8860b" }}>
+      <Typography variant="subtitle1" align="center" gutterBottom style={{ fontWeight: 800, color: "#fff" }}>
         Welcome! Explore, manage, and discover amazing places, countries, and continents.
       </Typography>
       <Box sx={{  mt: 2, bgcolor: "#fff", margin: "0 auto" }}>
@@ -49,7 +49,7 @@ export default function Dashboard() {
           >
             {carouselItems.map(item => (
               <Box key={item._id} sx={{ textAlign: "center", bgcolor: "#fff"}}>
-                <img src={item.imageUrl} alt={item.imageName} style={{ width: "100%", height: "600px", objectFit: "cover", borderRadius: 8, boxSizing: 'border-box', border: 0 }} />
+                <img src={item.imageUrl} alt={item.imageName} style={{ width: "100%", height: "568px", objectFit: "cover", borderRadius: 8, boxSizing: 'border-box', border: 0 }} />
                 {/* <Typography variant="h6" sx={{ mt: 1 }}>{item.imageName}</Typography> */}
               </Box>
             ))}
@@ -70,7 +70,7 @@ export default function Dashboard() {
         if (countryCities.length === 0) return null;
         return (
           <Box key={country._id} sx={{ mt: 6 }}>
-            <Typography variant="h5" sx={{ fontWeight: 700, color: "#b8860b", mb: 2 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: "royalblue", mb: 2 }}>
               {country.name}
             </Typography>
             <Box sx={{ display: "flex", gap: 3, overflowX: "auto", pb: 2 }}>
