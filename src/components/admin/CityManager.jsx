@@ -43,6 +43,11 @@ export default function CityManager() {
   const [countryId, setCountryId] = useState("");
   const [cityImage, setCityImage] = useState("");
   const [trendingSequence, setTrendingSequence] = useState("");
+  const [beachImageUrl, setBeachImageUrl] = useState("");
+  const [templeImageUrl, setTempleImageUrl] = useState("");
+  const [monumentImageUrl, setMonumentImageUrl] = useState("");
+  const [museumImageUrl, setMuseumImageUrl] = useState("");
+  const [parkImageUrl, setParkImageUrl] = useState("");
 
   // ✅ Fetch all on load
   useEffect(() => {
@@ -59,11 +64,25 @@ export default function CityManager() {
     setName(city.name);
     setStateId(city.stateId?._id || "");
     setCountryId(city.countryId?._id || "");  // ✅ FIXED
+    setTrendingSequence(city.trendingSequence ?? "");
+    setCityImage(city.cityImage ?? "");
+    setBeachImageUrl(city.beachImageUrl ?? "");
+    setTempleImageUrl(city.templeImageUrl ?? "");
+    setMonumentImageUrl(city.monumentImageUrl ?? "");
+    setMuseumImageUrl(city.museumImageUrl ?? "");
+    setParkImageUrl(city.parkImageUrl ?? "");
   } else {
     setEditCity(null);
     setName("");
     setStateId("");
     setCountryId("");
+    setTrendingSequence("");
+    setCityImage("");
+    setBeachImageUrl("");
+    setTempleImageUrl("");
+    setMonumentImageUrl("");
+    setMuseumImageUrl("");
+    setParkImageUrl("");
   }
   setOpen(true);
 };
@@ -75,6 +94,11 @@ export default function CityManager() {
     formData.append("stateId", stateId);
     formData.append("trendingSequence", trendingSequence);
     formData.append("cityImage", cityImage);
+    formData.append("beachImageUrl", beachImageUrl);
+    formData.append("templeImageUrl", templeImageUrl);
+    formData.append("monumentImageUrl", monumentImageUrl);
+    formData.append("museumImageUrl", museumImageUrl);
+    formData.append("parkImageUrl", parkImageUrl);
 
     if (editCity) {
       dispatch(updateCity({ id: editCity._id, data: formData }));
@@ -110,6 +134,13 @@ export default function CityManager() {
               <TableCell><strong>City</strong></TableCell>
               <TableCell><strong>State</strong></TableCell>
               <TableCell><strong>Country</strong></TableCell>
+              <TableCell><strong>Trending Sequence</strong></TableCell>
+              <TableCell><strong>City Image URL</strong></TableCell>
+              <TableCell><strong>Beach Image URL</strong></TableCell>
+              <TableCell><strong>Temple Image URL</strong></TableCell>
+              <TableCell><strong>Monument Image URL</strong></TableCell>
+              <TableCell><strong>Museum Image URL</strong></TableCell>
+              <TableCell><strong>Park Image URL</strong></TableCell>
               <TableCell><strong>Actions</strong></TableCell>
             </TableRow>
           </TableHead>
@@ -119,6 +150,13 @@ export default function CityManager() {
                 <TableCell>{city.name}</TableCell>
                 <TableCell>{city.stateId?.name}</TableCell>
                 <TableCell>{city.countryId?.name}</TableCell>
+                <TableCell>{city.trendingSequence ?? ""}</TableCell>
+                <TableCell>{city.cityImage ? <img src={city.cityImage} alt="City" style={{width:40, height:40, objectFit:'cover'}} /> : ""}</TableCell>
+                <TableCell>{city.beachImageUrl ? <img src={city.beachImageUrl} alt="Beach" style={{width:40, height:40, objectFit:'cover'}} /> : ""}</TableCell>
+                <TableCell>{city.templeImageUrl ? <img src={city.templeImageUrl} alt="Temple" style={{width:40, height:40, objectFit:'cover'}} /> : ""}</TableCell>
+                <TableCell>{city.monumentImageUrl ? <img src={city.monumentImageUrl} alt="Monument" style={{width:40, height:40, objectFit:'cover'}} /> : ""}</TableCell>
+                <TableCell>{city.museumImageUrl ? <img src={city.museumImageUrl} alt="Museum" style={{width:40, height:40, objectFit:'cover'}} /> : ""}</TableCell>
+                <TableCell>{city.parkImageUrl ? <img src={city.parkImageUrl} alt="Park" style={{width:40, height:40, objectFit:'cover'}} /> : ""}</TableCell>
                 <TableCell>
                   <IconButton color="primary" onClick={() => handleOpen(city)}>
                     <Edit />
@@ -131,7 +169,7 @@ export default function CityManager() {
             ))}
             {cities.length === 0 && (
               <TableRow>
-                <TableCell colSpan={4} align="center">
+                <TableCell colSpan={6} align="center">
                   No cities available
                 </TableCell>
               </TableRow>
@@ -200,6 +238,41 @@ export default function CityManager() {
             fullWidth
             margin="normal"
             required
+          />
+          <TextField
+            label="Beach Image URL"
+            value={beachImageUrl}
+            onChange={e => setBeachImageUrl(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Temple Image URL"
+            value={templeImageUrl}
+            onChange={e => setTempleImageUrl(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Monument Image URL"
+            value={monumentImageUrl}
+            onChange={e => setMonumentImageUrl(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Museum Image URL"
+            value={museumImageUrl}
+            onChange={e => setMuseumImageUrl(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Park Image URL"
+            value={parkImageUrl}
+            onChange={e => setParkImageUrl(e.target.value)}
+            fullWidth
+            margin="normal"
           />
         </DialogContent>
         <DialogActions>
