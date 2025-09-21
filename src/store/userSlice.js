@@ -1,4 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "../api/axiosInstance";
+
+// Async thunk to toggle favorite and update favorites
+export const toggleFavorite = createAsyncThunk(
+  "user/toggleFavorite",
+  async (placeId, { getState }) => {
+    const token = localStorage.getItem("token");
+    const res = await axiosInstance.post(
+      "/api/user/favorites",
+      { placeId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data || [];
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -24,6 +39,11 @@ const userSlice = createSlice({
       favorites: [],
       cart: [],
     }),
+  },
+  extraReducers: (builder) => {
+    builder.addCase(toggleFavorite.fulfilled, (state, action) => {
+      state.favorites = action.payload;
+    });
   },
 });
 

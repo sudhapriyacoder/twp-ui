@@ -18,14 +18,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useSelector, useDispatch } from "react-redux";
-import { updateFavorites } from "../store/userSlice"; // new action in userSlice
+import { toggleFavorite } from "../store/userSlice";
 // import { toggleCart } from "../store/cartSlice";
 import { fetchPlacesById } from "../store/selectionSlice";
 import { addToCart, removeFromCart, fetchCart } from "../store/cartSlice";
 import axiosInstance from "../api/axiosInstance";
 // ---------------- Subcomponent ----------------
-function PlaceCard({ p, isWishlisted, isInCart, dispatch }) {
-const userId = useSelector(state => state.user.id);
+function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
+  const userId = useSelector((state) => state.user.id);
   const [loaded, setLoaded] = useState(false);
   const navigate = useNavigate();
   const query = new URLSearchParams(useLocation().search);
@@ -34,28 +34,31 @@ const userId = useSelector(state => state.user.id);
   const state = query.get("state");
   const city = query.get("city");
 
+  const handleToggleFavorite = () => {
+    dispatch(toggleFavorite(p._id));
+  };
 
-const handleToggleFavorite = async (placeId) => {
-  try {
-    const token = localStorage.getItem("token");
-    const res = await axiosInstance.post(
-      `/api/user/favorites`,  // ✅ use backend URL
-      { placeId },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    console.log("Updated favorites:", res.data);
-    // optionally update redux/user state here
-  } catch (err) {
-    console.error("Error updating favorites", err);
-  }
-};
-
-const handleToggleCart = () => {
-    if (isInCart(p._id)) {
-      dispatch(removeFromCart({ userId, placeId: p._id }));
-    } else {
+  const handleToggleCart = () => {
+    // Check if cart is empty or all items are from the same city
+    if (!isInCart(p._id)) {
+      if (cart.length > 0) {
+        const firstCityId =
+          cart[0].cityId?._id ||
+          cart[0].cityId ||
+          cart[0].city?._id ||
+          cart[0].city;
+        const currentCityId =
+          p.cityId?._id || p.cityId || p.city?._id || p.city;
+        if (firstCityId !== currentCityId) {
+          alert(
+            "You can only add places from the same city to your cart. Please remove other items before adding places from a different city."
+          );
+          return;
+        }
+      }
       dispatch(addToCart({ userId, placeId: p._id }));
+    } else {
+      dispatch(removeFromCart({ userId, placeId: p._id }));
     }
   };
 
@@ -89,19 +92,6 @@ const handleToggleCart = () => {
         )}
       </Box>
 
-      {/* Wishlist Icon */}
-      {/* <IconButton
-        sx={{ position: "absolute", top: 8, right: 8, bgcolor: "white" }}
-        size="small"
-        onClick={() => handleToggleFavorite(p._id)}
-      >
-        {isWishlisted(p._id) ? (
-          <FavoriteIcon color="error" />
-        ) : (
-          <FavoriteBorderIcon />
-        )}
-      </IconButton> */}
-
       {/* Content */}
       <CardContent>
         <Box
@@ -130,19 +120,30 @@ const handleToggleCart = () => {
           >
             About {p.name}
           </Button>
-
+          {/* Favorite Icon */}
+          {userId && (
+            <IconButton
+              size="small"
+              color={isWishlisted(p._id) ? "error" : "default"}
+              onClick={handleToggleFavorite}
+            >
+              {isWishlisted(p._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </IconButton>
+          )}
           {/* Cart Icon */}
-         {userId && <IconButton
-            size="small"
-            color="primary"
-             onClick={handleToggleCart}
-          >
-            {isInCart(p._id) ? (
-              <ShoppingCartIcon />
-            ) : (
-              <ShoppingCartOutlinedIcon />
-            )}
-          </IconButton>}
+          {userId && (
+            <IconButton
+              size="small"
+              color="primary"
+              onClick={handleToggleCart}
+            >
+              {isInCart(p._id) ? (
+                <ShoppingCartIcon />
+              ) : (
+                <ShoppingCartOutlinedIcon />
+              )}
+            </IconButton>
+          )}
         </Box>
       </CardContent>
     </Card>
@@ -164,12 +165,31 @@ export default function PlacesPage() {
   );
   const user = useSelector((store) => store.user); // ✅ from Redux
 
-  const wishlist = user?.favorites || [];
+  const wishlist = Array.isArray(user?.favorites) ? user.favorites : [];
   const cart = useSelector((state) => state.cart.items);
 
-  const isWishlisted = (id) => wishlist.some((favId) => favId === id || favId._id === id);
+  const isWishlisted = (id) =>
+    wishlist.some((favId) => favId === id || favId._id === id);
   const isInCart = (id) => cart.some((p) => p._id === id || p === id);
-    let userId = useSelector(store => store.user.id);
+  let userId = useSelector((store) => store.user.id);
+
+  // Get city, state, country, continent info from places or query
+  let cityName = "";
+  let stateName = "";
+  let countryName = "";
+  let continentName = "";
+  if (places?.places?.length > 0) {
+    const cityObj = places.places[0].cityId || places.places[0].city;
+    cityName = cityObj?.name || city;
+    stateName = cityObj?.stateId?.name || state;
+    countryName = cityObj?.countryId?.name || country;
+    continentName = cityObj?.countryId?.continentId?.name || continent;
+  } else {
+    cityName = city;
+    stateName = state;
+    countryName = country;
+    continentName = continent;
+  }
 
   useEffect(() => {
     if (cityId) {
@@ -177,9 +197,9 @@ export default function PlacesPage() {
     }
   }, [cityId, dispatch]);
 
-   useEffect(() => {
-    if (userId ) {
-       dispatch(fetchCart(userId)); 
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchCart(userId));
     }
   }, [dispatch, userId]);
 
@@ -190,10 +210,10 @@ export default function PlacesPage() {
   return (
     <div style={{ padding: 24 }}>
       <Typography variant="h5" gutterBottom fontWeight={700}>
-        {state} — Top Places to Visit in {city}
+        {stateName} — Top Places to Visit in {cityName}
       </Typography>
       <Typography variant="body2" color="text.secondary" gutterBottom>
-        {continent} / {country} / {state} / {city}
+        {continentName} / {countryName} / {stateName} / {cityName}
       </Typography>
 
       <Grid container spacing={3}>
@@ -204,6 +224,7 @@ export default function PlacesPage() {
               isWishlisted={isWishlisted}
               isInCart={isInCart}
               dispatch={dispatch}
+              cart={cart}
             />
           </Grid>
         ))}

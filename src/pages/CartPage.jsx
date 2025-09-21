@@ -162,7 +162,7 @@ export default function CartPage() {
                         )}
                       </TableCell>
                       <TableCell align="center">{p.landMark || "-"}</TableCell>
-                      {/* <TableCell align="center">
+                      <TableCell align="center">
                         <IconButton
                           color="error"
                           onClick={() =>
@@ -173,7 +173,7 @@ export default function CartPage() {
                         >
                           <DeleteIcon />
                         </IconButton>
-                      </TableCell> */}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

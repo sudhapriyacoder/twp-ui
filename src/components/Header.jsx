@@ -23,6 +23,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import MenuIcon from "@mui/icons-material/Menu";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -50,6 +51,7 @@ export default function Header() {
   const user = useSelector(state => state.user);
   const {id: userId} = user;
   const cartItems = useSelector(state => state.cart.items);
+  const favorites = useSelector(state => state.user.favorites || []);
 
   useEffect(() => {
     dispatch(fetchTaxonomy());
@@ -219,6 +221,14 @@ export default function Header() {
                       </Box>
                     )}
                   </IconButton>}
+                  <IconButton color="inherit" onClick={() => navigate('/wishlist')} sx={{ position: 'relative' }}>
+                    {favorites.length > 0 ? <FavoriteIcon sx={{ color: '#212121' }} /> : <FavoriteBorderIcon />}
+                    {favorites.length > 0 && (
+                      <Box sx={{ position: 'absolute', top: -4, right: -4, bgcolor: '#ff3f6c', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, border: '2px solid #fff' }}>
+                        {favorites.length}
+                      </Box>
+                    )}
+                  </IconButton>
                 </>
               )}
             </Box>

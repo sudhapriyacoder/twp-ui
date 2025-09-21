@@ -49,7 +49,7 @@ export default function Dashboard() {
           >
             {carouselItems.map(item => (
               <Box key={item._id} sx={{ textAlign: "center", bgcolor: "#fff"}}>
-                <img src={item.imageUrl} alt={item.imageName} style={{ width: "100%", objectFit: "cover", borderRadius: 8 }} />
+                <img src={item.imageUrl} alt={item.imageName} style={{ width: "100%", height: "600px", objectFit: "cover", borderRadius: 8, boxSizing: 'border-box', border: 0 }} />
                 {/* <Typography variant="h6" sx={{ mt: 1 }}>{item.imageName}</Typography> */}
               </Box>
             ))}
@@ -76,7 +76,7 @@ export default function Dashboard() {
             <Box sx={{ display: "flex", gap: 3, overflowX: "auto", pb: 2 }}>
               {countryCities.map(city => (
                 <Card key={city._id} sx={{ minWidth: 220, maxWidth: 220, height: 180, position: "relative", boxShadow: 3, overflow: "hidden", border: "4px dashed #FFD700", borderRadius: 0, cursor: "pointer" }}
-                  onClick={() => navigate(`/places?cityId=${city._id}`)}>
+                  onClick={() => navigate(`/places?continent=${encodeURIComponent(country.continentId?.name || '')}&country=${encodeURIComponent(country.name)}&state=${encodeURIComponent(city.stateId?.name || '')}&city=${encodeURIComponent(city.name)}&cityId=${city._id}`)}>
                   <img src={city.cityImage} alt={city.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   <CardContent sx={{ position: "absolute", bottom: 0, left: 0, width: "100%", bgcolor: "rgba(0,0,0,0.5)", color: "#fff", p: 0.5, pb: 1 }}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 700, textAlign: "center", mb: 0.5 }}>{city.name}</Typography>

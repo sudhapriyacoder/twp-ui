@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateFavorites } from "../store/userSlice";
 import {
   Typography,
   Grid,
@@ -15,6 +17,7 @@ import axiosInstance from "../api/axiosInstance";
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState([]);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,12 +40,13 @@ export default function WishlistPage() {
   const handleRemove = async (placeId) => {
     try {
       const token = localStorage.getItem("token");
-      await axiosInstance.post(
+      const res = await axiosInstance.post(
         "/api/user/favorites",
         { placeId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setWishlist((prev) => prev.filter((p) => p._id !== placeId));
+      setWishlist(res.data || []);
+      dispatch(updateFavorites(res.data || []));
     } catch (err) {
       console.error("Error removing from wishlist:", err);
     }
@@ -112,10 +116,10 @@ export default function WishlistPage() {
                   <Typography variant="h6" fontWeight={600} gutterBottom>
                     {p.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  {/* <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     {p.description || "No description available"}
-                  </Typography>
-                  {p.type && (
+                  </Typography> */}
+                  {/* {p.type && (
                     <Typography
                       variant="caption"
                       sx={{
@@ -131,7 +135,7 @@ export default function WishlistPage() {
                     >
                       {p.type}
                     </Typography>
-                  )}
+                  )} */}
                 </CardContent>
               </Card>
             </Grid>

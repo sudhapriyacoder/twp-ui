@@ -52,6 +52,17 @@ function App() {
       try {
         const decoded = jwtDecode(token);
         dispatch(setUser({ id: decoded.id, email: decoded.email }));
+        // Fetch latest wishlist and cart
+        axiosInstance.get("/api/user/favorites", {
+          headers: { Authorization: `Bearer ${token}` }
+        }).then(res => {
+          dispatch({ type: "user/updateFavorites", payload: res.data || [] });
+        });
+        axiosInstance.get(`/api/user/${decoded.id}/cart`, {
+          headers: { Authorization: `Bearer ${token}` }
+        }).then(res => {
+          dispatch({ type: "user/updateCart", payload: res.data || [] });
+        });
       } catch (err) {
         localStorage.removeItem("token");
       }

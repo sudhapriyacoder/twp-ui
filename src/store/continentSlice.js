@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../api/axiosInstance";
 
 // API Base URL
-// const API_URL = "https://twp-server.onrender.com/api/continents/";
-const API_URL = "http://localhost:5000/api/continents/";
+const API_URL = "https://twp-server.onrender.com/api/continents/";
+// const API_URL = "http://localhost:5000/api/continents/";
 
 
 // Thunks
