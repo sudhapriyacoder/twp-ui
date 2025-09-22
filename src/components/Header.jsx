@@ -186,6 +186,7 @@ export default function Header() {
                   variant="outlined"
                   size="small"
                   onClick={() => navigate("/sign")}
+                  sx={{ color: '#fff', borderColor: '#fff' }}
                 >
                   Login
                 </Button>

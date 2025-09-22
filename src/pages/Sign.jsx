@@ -46,18 +46,21 @@ const AuthUI = ({ onLogin }) => {
       }}
     >
       <Box
-        sx={{
-          width: 400,
-          bgcolor: "white",
-          p: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-        }}
+          sx={{
+            width: 400,
+            bgcolor: "white",
+            p: 4,
+            borderRadius: 2,
+            boxShadow: 3,
+            border: '2px solid #fff',
+          }}
       >
         <GoogleLogin
           onSuccess={handleGoogleLogin}
           onError={() => console.log("Google Login Failed")}
         />
+          {/* Example: Add a TextField for email/password login if needed */}
+          {/* <TextField label="Email" variant="outlined" fullWidth sx={{ mt: 2, input: { color: '#fff' }, '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#fff' } }, '& .MuiInputLabel-root': { color: '#fff' } }} /> */}
       </Box>
     </Box>
   );
