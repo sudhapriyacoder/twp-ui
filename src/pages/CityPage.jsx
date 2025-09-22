@@ -67,10 +67,10 @@ export default function CityPage() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                bgcolor: city.imageUrl ? 'rgba(227,234,252,0.7)' : '#e3eafc',
+                bgcolor: city.cityImage ? 'rgba(227,234,252,0.7)' : '#e3eafc',
                 p: 2,
                 transition: "border 0.2s",
-                backgroundImage: city.imageUrl ? `url(${city.imageUrl})` : undefined,
+                backgroundImage: city.cityImage ? `url(${city.cityImage})` : undefined,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
@@ -81,7 +81,17 @@ export default function CityPage() {
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 700, color: "#23396c", textAlign: "center", textShadow: city.imageUrl ? '0 2px 8px #fff' : undefined }}>
-                {city.name}
+                <span style={{
+                  fontWeight: 700,
+                  color: 'white',
+                  textAlign: 'center',
+                  textShadow: '0 2px 8px #fff',
+                  backgroundColor: '#230bd970',
+                  padding: '0 10px',
+                  fontSize: '25px',
+                  borderRadius: '6px',
+                  display: 'inline-block',
+                }}>{city.name}</span>
               </Typography>
             </Card>
           ))}

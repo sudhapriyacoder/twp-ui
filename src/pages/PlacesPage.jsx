@@ -74,9 +74,9 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
   };
 
   return (
-    <Card sx={{ position: "relative", width: '18em', height: '12em' }}>
+    <Card sx={{ position: "relative", width: "100%", height: "100%" }}>
       {/* Image with skeleton overlay */}
-      <Box sx={{ position: "relative", width: "100%", height: '8em' }}>
+      <Box sx={{ position: "relative", width: "100%", height: 180 }}>
         <CardMedia
           component="img"
           image={p.image}

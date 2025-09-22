@@ -29,7 +29,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.jpg";
+import Logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaxonomy } from "../store/taxonomySlice";
 import { jwtDecode } from "jwt-decode";
@@ -86,10 +86,7 @@ export default function Header() {
     <>
       <AppBar position="sticky" sx={{ bgcolor: "#23396c", color: "#fff" }}>
         <Toolbar sx={{ gap: 2 }}>
-          {/* Home Icon */}
-          <IconButton onClick={() => navigate("/dashboard")} sx={{ color: '#fff', mr: 1 }}>
-            <HomeIcon fontSize="large" />
-          </IconButton>
+         
           {/* Logo */}
           <Box
             sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
@@ -98,11 +95,15 @@ export default function Header() {
             <img
               src={Logo}
               alt="Logo"
-              style={{ width: 60, height: 60, marginRight: 8 }}
+              style={{ width: '120px',  height: '40px', marginRight: 8 }}
             />
           </Box>
           {/* Right-side buttons */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 3, flex: 1, justifyContent: 'flex-end' }}>
+             {/* Home Icon */}
+          <IconButton onClick={() => navigate("/dashboard")} sx={{ color: '#fff' }}>
+            <HomeIcon fontSize="large" />
+          </IconButton>
             <Button
               variant="outlined"
               size="small"

@@ -73,7 +73,17 @@ export default function StatePage() {
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 700, color: "#23396c", textAlign: "center", textShadow: state.imageUrl ? '0 2px 8px #fff' : undefined }}>
-                {state.name}
+                <span style={{
+                  fontWeight: 700,
+                  color: 'white',
+                  textAlign: 'center',
+                  textShadow: '0 2px 8px #fff',
+                  backgroundColor: '#230bd970',
+                  padding: '0 10px',
+                  fontSize: '25px',
+                  borderRadius: '6px',
+                  display: 'inline-block',
+                }}>{state.name}</span>
               </Typography>
             </Card>
           ))}

@@ -174,8 +174,8 @@ export default function Dashboard() {
                 <Card
                   key={country._id}
                   sx={{
-                    width: '18em',
-                    height: '12em',
+                    width: "25em",
+                    height: "18em",
                     position: "relative",
                     boxShadow: 3,
                     overflow: "hidden",
@@ -190,7 +190,17 @@ export default function Dashboard() {
                   onClick={() => setSelectedCountryId(country._id)}
                 >
                   <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: country.imageUrl ? 'transparent' : '#e3eafc' }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#fff', textAlign: 'center', textShadow: country.imageUrl ? '0 2px 8px #fff' : undefined }}>{country.name}</Typography>
+                    <Typography variant="h6" sx={{
+                      fontWeight: 700,
+                      color: 'white',
+                      textAlign: 'center',
+                      textShadow: '0 2px 8px #fff',
+                      backgroundColor: '#230bd970',
+                      padding: '0 10px',
+                      fontSize: '25px',
+                      borderRadius: '6px',
+                      display: 'inline-block',
+                    }}>{country.name}</Typography>
                     <Box sx={{ position: 'absolute', bottom: 5, left: 0, width: '100%', display: 'flex', justifyContent: 'center' }}>
                       <Link
   to={`/states?continent=${encodeURIComponent(
@@ -247,7 +257,7 @@ export default function Dashboard() {
                       {selectedCountry.states.map(state => (
                         <Card 
                           key={state._id} 
-                          sx={{ width: '18em', height: '12em', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 2, bgcolor: state.imageUrl ? 'rgba(227,234,252,0.7)' : '#e3eafc', borderRadius: 2, p: 1, cursor: 'pointer', backgroundImage: state.imageUrl ? `url(${state.imageUrl})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                          sx={{ width: '22em', height: '16em', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 2, bgcolor: state.imageUrl ? 'rgba(227,234,252,0.7)' : '#e3eafc', borderRadius: 2, p: 1, cursor: 'pointer', backgroundImage: state.imageUrl ? `url(${state.imageUrl})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
                           onClick={() => {
                             setSelectedStateId(state._id);
                             const continentName = taxonomy.find(cont => cont._id === selectedContinent)?.name || '';
@@ -264,7 +274,17 @@ export default function Dashboard() {
                             navigate(`/city?continent=${encodeURIComponent(continentName)}&country=${encodeURIComponent(countryName)}&state=${encodeURIComponent(stateName)}&cities=${encodeURIComponent(JSON.stringify(stateCities))}`);
                           }}
                         >
-                          <Typography sx={{ fontWeight: 600, color: '#23396c', fontSize: 16, textShadow: state.imageUrl ? '0 2px 8px #fff' : undefined }}>{state.name}</Typography>
+                          <Typography sx={{
+                            fontWeight: 700,
+                            color: 'white',
+                            textAlign: 'center',
+                            textShadow: '0 2px 8px #fff',
+                            backgroundColor: '#230bd970',
+                            padding: '0 10px',
+                            fontSize: '25px',
+                            borderRadius: '6px',
+                            display: 'inline-block',
+                          }}>{state.name}</Typography>
                         </Card>
                       ))}
                     </Box>
@@ -284,7 +304,7 @@ export default function Dashboard() {
                       {top10Cities.map(city => (
                         <Card 
                           key={city._id} 
-                          sx={{ width: '18em', height: '12em', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 2, bgcolor: city.cityImage ? 'rgba(255,255,255,0.7)' : '#fff', borderRadius: 2, p: 1, cursor: 'pointer', backgroundImage: city.cityImage ? `url(${city.cityImage})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                          sx={{ width: '16em', height: '10em', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 2, bgcolor: city.cityImage ? 'rgba(255,255,255,0.7)' : '#fff', borderRadius: 2, p: 1, cursor: 'pointer', backgroundImage: city.cityImage ? `url(${city.cityImage})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
                           onClick={() => {
                             setSelectedCityId(city._id);
                             const stateName = city.stateId?.name || '';
@@ -293,7 +313,17 @@ export default function Dashboard() {
                             navigate(`/places?cityId=${city._id}&cityName=${encodeURIComponent(city.name)}&state=${encodeURIComponent(stateName)}&country=${encodeURIComponent(countryName)}&continent=${encodeURIComponent(continentName)}`);
                           }}
                         >
-                          <Typography sx={{ fontWeight: 600, color: '#23396c', fontSize: 16, textShadow: city.cityImage ? '0 2px 8px #fff' : undefined }}>{city.name}</Typography>
+                          <Typography sx={{
+                            fontWeight: 700,
+                            color: 'white',
+                            textAlign: 'center',
+                            textShadow: '0 2px 8px #fff',
+                            backgroundColor: '#230bd970',
+                            padding: '0 10px',
+                            fontSize: '25px',
+                            borderRadius: '6px',
+                            display: 'inline-block',
+                          }}>{city.name}</Typography>
                         </Card>
                       ))}
                     </Box>
@@ -333,7 +363,7 @@ export default function Dashboard() {
                         {categoryCities.map(city => (
                           <Card 
                             key={city._id} 
-                            sx={{ width: '18em', height: '12em', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 2, bgcolor: city.cityImage ? 'rgba(255,255,255,0.7)' : '#fff', borderRadius: 2, p: 1, cursor: 'pointer', backgroundImage: city.cityImage ? `url(${city.cityImage})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                            sx={{ width: '16em', height: '10em', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: 2, bgcolor: city.cityImage ? 'rgba(255,255,255,0.7)' : '#fff', borderRadius: 2, p: 1, cursor: 'pointer', backgroundImage: city.cityImage ? `url(${city.cityImage})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center' }}
                             onClick={() => {
                               const stateName = city.stateId?.name || '';
                               const countryName = city.countryId?.name || '';
@@ -341,7 +371,17 @@ export default function Dashboard() {
                               navigate(`/places?cityId=${city._id}&cityName=${encodeURIComponent(city.name)}&state=${encodeURIComponent(stateName)}&country=${encodeURIComponent(countryName)}&continent=${encodeURIComponent(continentName)}`);
                             }}
                           >
-                            <Typography sx={{ fontWeight: 600, color: '#23396c', fontSize: 16, textShadow: city.cityImage ? '0 2px 8px #fff' : undefined }}>{city.name}</Typography>
+                            <Typography sx={{
+                              fontWeight: 700,
+                              color: 'white',
+                              textAlign: 'center',
+                              textShadow: '0 2px 8px #fff',
+                              backgroundColor: '#230bd970',
+                              padding: '0 10px',
+                              fontSize: '25px',
+                              borderRadius: '6px',
+                              display: 'inline-block',
+                            }}>{city.name}</Typography>
                           </Card>
                         ))}
                       </Box>
