@@ -74,6 +74,7 @@ function App() {
     <Router>
       <Header />
       <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/sign" element={<AuthUI />} />
         <Route path="/city" element={<CityPage />} />
@@ -81,7 +82,7 @@ function App() {
         <Route path="/bookings" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/admin" element={<Admin />} />
-         <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );
