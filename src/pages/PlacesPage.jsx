@@ -22,7 +22,6 @@ import { toggleFavorite } from "../store/userSlice";
 // import { toggleCart } from "../store/cartSlice";
 import { fetchPlacesById } from "../store/selectionSlice";
 import { addToCart, removeFromCart, fetchCart } from "../store/cartSlice";
-import axiosInstance from "../api/axiosInstance";
 // ---------------- Subcomponent ----------------
 function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
   const userId = useSelector((state) => state.user.id);
@@ -32,11 +31,17 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
   const continent = query.get("continent");
   const country = query.get("country");
   const state = query.get("state");
-  const city = query.get("city");
+  const city = query.get("cityName") || query.get("city");
 
-  const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(p._id));
-  };
+    const handleToggleFavorite = () => {
+      if (!userId) {
+        if (window.confirm("To add to favorites, you need to login first. Do you want to login now?")) {
+          navigate('/sign', { state: { from: window.location.pathname + window.location.search } });
+        }
+        return;
+      }
+      dispatch(toggleFavorite(p._id));
+    };
 
   const handleToggleCart = () => {
     // Check if cart is empty or all items are from the same city
@@ -56,6 +61,12 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
           return;
         }
       }
+      if (!userId) {
+        if (window.confirm("To add to cart, you need to login first. Do you want to login now?")) {
+          navigate('/sign', { state: { from: window.location.pathname + window.location.search } });
+        }
+        return;
+      }
       dispatch(addToCart({ userId, placeId: p._id }));
     } else {
       dispatch(removeFromCart({ userId, placeId: p._id }));
@@ -63,9 +74,9 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
   };
 
   return (
-    <Card sx={{ position: "relative", width: "100%", height: "100%" }}>
+    <Card sx={{ position: "relative", width: '18em', height: '12em' }}>
       {/* Image with skeleton overlay */}
-      <Box sx={{ position: "relative", width: "100%", height: 180 }}>
+      <Box sx={{ position: "relative", width: "100%", height: '8em' }}>
         <CardMedia
           component="img"
           image={p.image}
@@ -121,7 +132,6 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
             About {p.name}
           </Button>
           {/* Favorite Icon */}
-          {userId && (
             <IconButton
               size="small"
               color={isWishlisted(p._id) ? "error" : "default"}
@@ -129,9 +139,7 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
             >
               {isWishlisted(p._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
             </IconButton>
-          )}
           {/* Cart Icon */}
-          {userId && (
             <IconButton
               size="small"
               color="primary"
@@ -143,7 +151,6 @@ function PlaceCard({ p, isWishlisted, isInCart, dispatch, cart }) {
                 <ShoppingCartOutlinedIcon />
               )}
             </IconButton>
-          )}
         </Box>
       </CardContent>
     </Card>
@@ -156,10 +163,11 @@ export default function PlacesPage() {
   const continent = query.get("continent");
   const country = query.get("country");
   const state = query.get("state");
-  const city = query.get("city");
+  const city = query.get("cityName") || query.get("city");
   const cityId = query.get("cityId");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { list: places, status, error } = useSelector(
     (state) => state.selection
   );
@@ -210,11 +218,36 @@ export default function PlacesPage() {
   return (
     <div style={{ padding: 24 }}>
       <Typography variant="h5" gutterBottom fontWeight={700}>
-        {stateName} — Top Places to Visit in {cityName}
+        Top Places to Visit in {cityName}
       </Typography>
-      <Typography variant="body2" color="text.secondary" gutterBottom>
-        {continentName} / {countryName} / {stateName} / {cityName}
-      </Typography>
+      {/* Breadcrumbs */}
+      <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => navigate('/dashboard')}
+        >
+          {continentName}
+        </Typography>
+        <Typography sx={{ color: '#888' }}>/</Typography>
+        <Typography
+          variant="subtitle2"
+          sx={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => navigate(`/states?continent=${encodeURIComponent(continentName)}&country=${encodeURIComponent(countryName)}`)}
+        >
+          {countryName}
+        </Typography>
+        <Typography sx={{ color: '#888' }}>/</Typography>
+        <Typography
+          variant="subtitle2"
+          sx={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
+          onClick={() => navigate(`/city?continent=${encodeURIComponent(continentName)}&country=${encodeURIComponent(countryName)}&state=${encodeURIComponent(stateName)}`)}
+        >
+          {stateName}
+        </Typography>
+        <Typography sx={{ color: '#888' }}>/</Typography>
+        <Typography variant="subtitle2" sx={{ color: '#888' }}>{cityName}</Typography>
+      </Box>
 
       <Grid container spacing={3}>
         {places?.places?.map((p) => (

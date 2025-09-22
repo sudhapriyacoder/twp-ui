@@ -35,6 +35,8 @@ export default function StateManager() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [countryId, setCountryId] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [trendingSequence, setTrendingSequence] = useState("");
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
@@ -47,6 +49,8 @@ export default function StateManager() {
     setOpen(false);
     setName("");
     setCountryId("");
+    setImageUrl("");
+    setTrendingSequence("");
     setEditId(null);
   };
 
@@ -56,13 +60,24 @@ export default function StateManager() {
       alert("Please select a country");
       return;
     }
-    dispatch(createState({ name, countryId }));
+    const payload = { name, countryId, imageUrl, trendingSequence };
+    if (imageUrl) payload.imageUrl = imageUrl;
+    if (trendingSequence) payload.trendingSequence = Number(trendingSequence);
+    if (editId && typeof editId === 'string' && editId !== 'undefined') {
+      dispatch(updateState({ id: editId, state: payload }));
+    } else if (!editId) {
+      dispatch(createState(payload));
+    } else {
+      alert('Invalid state ID for update.');
+    }
     handleClose();
   };
 
   const handleEdit = (state) => {
     setName(state.name);
     setCountryId(state.countryId?._id || "");
+    setImageUrl(state.imageUrl || "");
+    setTrendingSequence(state.trendingSequence || "");
     setEditId(state._id);
     setOpen(true);
   };
@@ -88,15 +103,11 @@ export default function StateManager() {
         <Table style={{ marginTop: "20px" }}>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <strong>State Name</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Country</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Actions</strong>
-              </TableCell>
+              <TableCell><strong>State Name</strong></TableCell>
+              <TableCell><strong>Country</strong></TableCell>
+              <TableCell><strong>Trending Seq</strong></TableCell>
+              <TableCell><strong>Image</strong></TableCell>
+              <TableCell><strong>Actions</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -104,6 +115,12 @@ export default function StateManager() {
               <TableRow key={s._id}>
                 <TableCell>{s.name}</TableCell>
                 <TableCell>{s.countryId?.name}</TableCell>
+                <TableCell>{s.trendingSequence ?? ""}</TableCell>
+                <TableCell>
+                  {s.imageUrl ? (
+                    <img src={s.imageUrl} alt="state" style={{ width: 40, height: 28, objectFit: 'cover', borderRadius: 4 }} />
+                  ) : ""}
+                </TableCell>
                 <TableCell>
                   <Button
                     variant="outlined"
@@ -141,7 +158,6 @@ export default function StateManager() {
             margin="normal"
             required
           />
-
           <TextField
             select
             label="Country"
@@ -158,6 +174,21 @@ export default function StateManager() {
               </MenuItem>
             ))}
           </TextField>
+          <TextField
+            label="Image URL (optional)"
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Trending Sequence (optional)"
+            type="number"
+            value={trendingSequence}
+            onChange={(e) => setTrendingSequence(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">

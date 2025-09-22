@@ -26,6 +26,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.jpg";
@@ -81,26 +82,14 @@ export default function Header() {
     );
   };
 
-  const handleProfileClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    dispatch(logoutUser());
-    handleCloseMenu();
-    navigate("/sign");
-  };
-
   return (
     <>
-      {/* AppBar */}
-  <AppBar position="sticky" sx={{ bgcolor: "#23396c", color: "#fff" }}>
+      <AppBar position="sticky" sx={{ bgcolor: "#23396c", color: "#fff" }}>
         <Toolbar sx={{ gap: 2 }}>
+          {/* Home Icon */}
+          <IconButton onClick={() => navigate("/dashboard")} sx={{ color: '#fff', mr: 1 }}>
+            <HomeIcon fontSize="large" />
+          </IconButton>
           {/* Logo */}
           <Box
             sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
@@ -112,129 +101,64 @@ export default function Header() {
               style={{ width: 60, height: 60, marginRight: 8 }}
             />
           </Box>
-
-          {/* Desktop: Continents + Search */}
-          {!isMobile && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 3,
-                flex: 1,
-              }}
+          {/* Right-side buttons */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 3, flex: 1, justifyContent: 'flex-end' }}>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => navigate("/admin")}
+              sx={{ color: '#fff', borderColor: '#fff' }}
             >
-              {/* Continent Tabs */}
-              <Box sx={{ display: "flex", gap: 3 }}>
-                {taxonomy?.map((c) => (
-                  <Box
-                    key={c._id}
-                    sx={{ position: "relative", px: 1 }}
-                    onMouseEnter={() => setHoverContinent(c)}
-                    onMouseLeave={() => setHoverContinent(null)}
-                  >
-                    <Typography
-                      variant="body1"
-                      fontWeight={600}
-                      sx={{
-                        cursor: "pointer",
-                        "&:hover": { color: "primary.main" },
-                      }}
-                    >
-                      {c.name}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-
-              {/* Search */}
-              <TextField
-                placeholder="Search places, states, themes"
-                variant="outlined"
-                size="small"
-                fullWidth
-                sx={{
-                  maxWidth: 460,
-                  bgcolor: "#f2f6f8",
-                  borderRadius: 1,
-                  "& fieldset": { border: "none" },
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Box>
-          )}
-
-          {/* Right icons / Hamburger */}
-          {!isMobile ? (
-            <Box sx={{ ml: "auto", display: "flex", gap: 1 }}>
+              Admin
+            </Button>
+            {!userId ? (
               <Button
                 variant="outlined"
                 size="small"
-                onClick={() => navigate("/admin")}
+                onClick={() => navigate("/sign")}
                 sx={{ color: '#fff', borderColor: '#fff' }}
               >
-                Admin
+                Login
               </Button>
-              {!userId ? (
-                // If NOT logged in
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={() => navigate("/sign")}
-                  sx={{ color: '#fff', borderColor: '#fff' }}
+            ) : (
+              <>
+                <IconButton title="Profile" onClick={() => setAnchorEl(true)}>
+                  <AccountCircleIcon sx={{ color: '#fff' }} />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={() => setAnchorEl(null)}
                 >
-                  Login
-                </Button>
-              ) : (
-                // If logged in
-                <>
-                  <IconButton title="Profile" onClick={handleProfileClick}>
-                    <AccountCircleIcon sx={{ color: '#fff' }} />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseMenu}
-                  >
-                    <MenuItem disabled>{user?.name}</MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
-                  {/* <IconButton
-                    title="Wishlist"
-                    onClick={() => navigate("/wishlist")}
-                  >
-                    <FavoriteBorderIcon />
-                  </IconButton> */}
-                 {userId && <IconButton
-                    title="Cart"
-                    onClick={() => navigate("/bookings")}
-                    color="inherit"
-                    sx={{ position: 'relative' }}
-                  >
-                    <ShoppingBagIcon />
-                    {cartItems.length > 0 && (
-                      <Box sx={{ position: 'absolute', top: -4, right: -4, bgcolor: '#ff3f6c', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, border: '2px solid #fff' }}>
-                        {cartItems.length}
-                      </Box>
-                    )}
-                  </IconButton>}
-                  <IconButton color="inherit" onClick={() => navigate('/wishlist')} sx={{ position: 'relative' }}>
-                    {favorites.length > 0 ? <FavoriteIcon sx={{ color: '#212121' }} /> : <FavoriteBorderIcon />}
-                    {favorites.length > 0 && (
-                      <Box sx={{ position: 'absolute', top: -4, right: -4, bgcolor: '#ff3f6c', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, border: '2px solid #fff' }}>
-                        {favorites.length}
-                      </Box>
-                    )}
-                  </IconButton>
-                </>
-              )}
-            </Box>
-          ) : (
+                  <MenuItem disabled>{user?.name}</MenuItem>
+                  <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
+                </Menu>
+                <IconButton
+                  title="Cart"
+                  onClick={() => navigate("/bookings")}
+                  color="inherit"
+                  sx={{ position: 'relative' }}
+                >
+                  <ShoppingBagIcon />
+                  {cartItems.length > 0 && (
+                    <Box sx={{ position: 'absolute', top: -4, right: -4, bgcolor: '#ff3f6c', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, border: '2px solid #fff' }}>
+                      {cartItems.length}
+                    </Box>
+                  )}
+                </IconButton>
+                <IconButton color="inherit" onClick={() => navigate('/wishlist')} sx={{ position: 'relative' }}>
+                  {favorites.length > 0 ? <FavoriteIcon sx={{ color: '#212121' }} /> : <FavoriteBorderIcon />}
+                  {favorites.length > 0 && (
+                    <Box sx={{ position: 'absolute', top: -4, right: -4, bgcolor: '#ff3f6c', color: '#fff', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, border: '2px solid #fff' }}>
+                      {favorites.length}
+                    </Box>
+                  )}
+                </IconButton>
+              </>
+            )}
+          </Box>
+          {/* Mobile: Hamburger */}
+          {isMobile && (
             <IconButton
               sx={{ ml: "auto" }}
               onClick={() => setDrawerOpen(true)}
@@ -245,96 +169,13 @@ export default function Header() {
           )}
         </Toolbar>
       </AppBar>
-
-      {/* Mega Menu (Desktop) */}
-      {!isMobile && hoverContinent && (
-        <Paper
-          onMouseEnter={() => setHoverContinent(hoverContinent)}
-          onMouseLeave={() => setHoverContinent(null)}
-          elevation={6}
-          sx={{
-            position: "absolute",
-            left: "5%",
-            right: "10%",
-            top: 50,
-            width: "80%",
-            zIndex: 1300,
-            px: 6,
-            py: 4,
-            bgcolor: "#fff",
-            borderRadius: "0 0 12px 12px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 4,
-          }}
-        >
-          {hoverContinent.countries?.map((country) => (
-            <Box key={country._id}>
-              <Typography
-                variant="subtitle1"
-                fontWeight={700}
-                gutterBottom
-                sx={{ color: "primary.main" }}
-              >
-                {country.name}
-              </Typography>
-
-              {/* States */}
-              {country.states?.map((s) => (
-                <Typography
-                  key={s._id}
-                  variant="body2"
-                  sx={{
-                    py: 0.5,
-                    cursor: "pointer",
-                    "&:hover": { color: "secondary.main" },
-                  }}
-                  onClick={() =>
-                    handleStateClick(hoverContinent.name, country.name, s)
-                  }
-                >
-                  {s.name}
-                </Typography>
-              ))}
-
-              {/* Direct Cities (for countries without states) */}
-              {(!country.states || country.states.length === 0) &&
-                country.cities?.map((city) => (
-                  <Typography
-                    key={city._id}
-                    variant="body2"
-                    sx={{
-                      py: 0.5,
-                      cursor: "pointer",
-                      "&:hover": { color: "secondary.main" },
-                    }}
-                    onClick={() =>
-                      navigate(
-                        `/places?continent=${encodeURIComponent(
-                          hoverContinent.name
-                        )}&country=${encodeURIComponent(
-                          country.name
-                        )}&city=${encodeURIComponent(city.name)}`
-                      )
-                    }
-                  >
-                    {city.name}
-                  </Typography>
-                ))}
-            </Box>
-          ))}
-        </Paper>
-      )}
-
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer: Only search and close button */}
       <Drawer
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       >
         <Box sx={{ width: 320, p: 2 }}>
-          {/* Search */}
           <TextField
             fullWidth
             size="small"
@@ -348,40 +189,8 @@ export default function Header() {
               ),
             }}
           />
-
-          {taxonomy?.map((continent) => (
-            <Accordion key={continent._id} disableGutters>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography fontWeight={700}>{continent.name}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {continent.countries?.map((country) => (
-                  <Accordion key={country._id} disableGutters>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      {country.name}
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <List dense>
-                        {country.states?.map((s) => (
-                          <ListItemButton
-                            key={s._id}
-                            onClick={() => {
-                              setDrawerOpen(false);
-                              handleStateClick(continent.name, country.name, s);
-                            }}
-                          >
-                            <ListItemText primary={s.name} />
-                          </ListItemButton>
-                        ))}
-                      </List>
-                    </AccordionDetails>
-                  </Accordion>
-                ))}
-              </AccordionDetails>
-            </Accordion>
-          ))}
         </Box>
       </Drawer>
     </>
   );
-}
+  }

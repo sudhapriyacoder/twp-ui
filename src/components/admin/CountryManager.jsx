@@ -42,6 +42,8 @@ export default function CountryManager() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [continentId, setContinentId] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [trendingSequence, setTrendingSequence] = useState("");
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
@@ -54,10 +56,14 @@ export default function CountryManager() {
     if (country) {
       setName(country.name);
       setContinentId(country.continentId?._id || "");
+      setImageUrl(country.imageUrl || "");
+      setTrendingSequence(country.trendingSequence || "");
       setEditId(country._id);
     } else {
       setName("");
       setContinentId("");
+      setImageUrl("");
+      setTrendingSequence("");
       setEditId(null);
     }
     setOpen(true);
@@ -67,6 +73,8 @@ export default function CountryManager() {
     setOpen(false);
     setName("");
     setContinentId("");
+    setImageUrl("");
+    setTrendingSequence("");
     setEditId(null);
   };
 
@@ -76,7 +84,16 @@ export default function CountryManager() {
       alert("Please select a continent");
       return;
     }
-    dispatch(createCountry({ name, continentId }));
+    const payload = { name, continentId, imageUrl, trendingSequence };
+    if (imageUrl) payload.imageUrl = imageUrl;
+    if (trendingSequence) payload.trendingSequence = Number(trendingSequence);
+    if (editId && typeof editId === 'string' && editId !== 'undefined') {
+      dispatch(updateCountry({ id: editId, country: payload }));
+    } else if (!editId) {
+      dispatch(createCountry(payload));
+    } else {
+      alert('Invalid country ID for update.');
+    }
     handleClose();
   };
 
@@ -104,6 +121,8 @@ export default function CountryManager() {
               <TableCell><b>#</b></TableCell>
               <TableCell><b>Country</b></TableCell>
               <TableCell><b>Continent</b></TableCell>
+              <TableCell><b>Trending Seq</b></TableCell>
+              <TableCell><b>Image</b></TableCell>
               <TableCell align="right"><b>Actions</b></TableCell>
             </TableRow>
           </TableHead>
@@ -114,6 +133,12 @@ export default function CountryManager() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{c.name}</TableCell>
                     <TableCell>{c.continentId?.name || "-"}</TableCell>
+                    <TableCell>{c.trendingSequence ?? ""}</TableCell>
+                    <TableCell>
+                      {c.imageUrl ? (
+                        <img src={c.imageUrl} alt="country" style={{ width: 40, height: 28, objectFit: 'cover', borderRadius: 4 }} />
+                      ) : ""}
+                    </TableCell>
                     <TableCell align="right">
                       <Button
                         variant="outlined"
@@ -137,7 +162,7 @@ export default function CountryManager() {
                 ))
               : (
                   <TableRow>
-                    <TableCell colSpan={4} align="center">
+                    <TableCell colSpan={6} align="center">
                       No countries found
                     </TableCell>
                   </TableRow>
@@ -175,6 +200,22 @@ export default function CountryManager() {
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              margin="dense"
+              label="Image URL (optional)"
+              type="text"
+              fullWidth
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+            />
+            <TextField
+              margin="dense"
+              label="Trending Sequence (optional)"
+              type="number"
+              fullWidth
+              value={trendingSequence}
+              onChange={(e) => setTrendingSequence(e.target.value)}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="secondary">

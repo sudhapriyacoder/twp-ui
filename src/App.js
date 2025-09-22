@@ -12,6 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import AuthUI from "./pages/Sign";
 import { GoogleLogin } from "@react-oauth/google";
 import Dashboard from "./pages/Dashboard";
+import StatePage from './pages/StatePage';
 import {
   Box,
   Tabs,
@@ -23,15 +24,6 @@ import {
 import axiosInstance from "./api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setUser } from "./store/userSlice";
-
-function Home() {
-  return (
-    <div style={{ padding: 16 }}>
-      <h2>Welcome to GhumneChalo</h2>
-      <p>Select a continent → country → state from the header to see places.</p>
-    </div>
-  );
-}
 
 function PlacesRouter() {
   const query = new URLSearchParams(useLocation().search);
@@ -82,6 +74,7 @@ function App() {
         <Route path="/bookings" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/states" element={<StatePage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
